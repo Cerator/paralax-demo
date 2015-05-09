@@ -71,7 +71,13 @@ mainloop:	jmp mainloop
 // Data                                                                                                 
 //********************************************************************************************
 // .pc=music.location "Music"
-// .fill music.size, music.getData(i)	        
+// .fill music.size, music.getData(i)
+
+//********************************************************************************************
+// Logo1                                                                                                 
+//********************************************************************************************
+logo1:
+.byte 20,20,20,20,20,20,20
 
 .pc = $4000 "Data"
 framecounter:
@@ -105,9 +111,13 @@ rastercolours_musiclines:
 // logo swing                                                                                                 
 //********************************************************************************************
 
-swinglogooffset: .byte $0
-swinglogoindex: .byte $00
-swinglogoactive: .byte $0
+swinglogo1offset: .byte $0
+swinglogo1index: .byte $00
+swinglogo1active: .byte $0
+
+swinglogo2offset: .byte $0
+swinglogo2index: .byte $00
+swinglogo2active: .byte $0
 
 swingsine: 
 	.fill 256, 105 + floor(70*sin(toRadians(i*360/256)))

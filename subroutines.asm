@@ -80,16 +80,16 @@ rts
 // Swing the lines
 //********************************************************************************************
 
-swinglogo:	
-	lda swinglogoactive
-	beq continueafterline
-	ldx swinglogoindex
+swinglogo1:	
+	lda swinglogo1active
+	beq continueafterlogo1
+	ldx swinglogo1index
 	lda swingsine,x
 	pha
 	and #$07
 	eor #$07
 	ora #$10
-	sta swinglogooffset
+	sta swinglogo1offset
 
 	pla
 	lsr
@@ -97,34 +97,36 @@ swinglogo:
 	lsr
 	tax	
 	// now the sine char offset is in x and we can draw the line
-// 	jsr drawline
+	//jsr drawlogo1
 
-	inc swinglogoindex
+	inc swinglogo1index
 
-continueafterline:		
+continueafterlogo1:		
 rts
 
 //********************************************************************************************
 // Draw the lines
 //********************************************************************************************
 
-// drawline:
-// 	ldy #$00
-// loopline1:
-// 	lda (LOGO),x
-// 	sta SCREENPOS,y
-// 	lda (LOGO)+$40,x
-// 	sta SCREENPOS+$28,y
-// 	lda demo3+$80,x
-// 	sta SCREENPOS+$50,y
-// 	lda demo3+$C0,x
-// 	sta SCREENPOS+$78,y
-// 	inx
-// 	iny
-// 	cpy #$28
-// 	bne loopline1
-// 
-// rts
+drawlogo1:
+	ldy #$00
+looplogo1:
+	lda logo1,x
+	sta SCREENPOS,y
+	lda logo1+$40,x
+	sta SCREENPOS+$28,y
+	lda logo1+$80,x
+	sta SCREENPOS+$50,y
+	lda logo1+$C0,x
+	sta SCREENPOS+$78,y
+	lda logo1+$100,x
+	sta SCREENPOS+$A0,y
+	inx
+	iny
+	cpy #$28
+	bne looplogo1
+
+rts
 
 
 //********************************************************************************************

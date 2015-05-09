@@ -30,9 +30,9 @@ startofscreen:
 	
 	dec framecounter
 	
- 	jsr swinglogo
+ 	jsr swinglogo1
 	
- 	lda swinglogooffset
+ 	lda swinglogo1offset
  	sta $d016
  	
 	ldy #STARTRASTERLINE
