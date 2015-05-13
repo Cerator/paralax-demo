@@ -51,6 +51,14 @@ incend:
     sta $d018
 }
 
+.macro SetLogoCharSet() {
+    lda $d018
+    and #%11110001
+    ora #%00001110        // set chars location to $3800 for displaying the custom font
+    sta $d018
+}
+
+
 .macro SetRasterLine(whichcolours,colourscheme) {
 	ldx #08
 colourloop:

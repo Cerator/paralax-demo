@@ -14,6 +14,7 @@
 .const SCROLLLINEOFFSET = 11*40
 .const SCREENPOS = $0400		//!!!
 .const COLOURRAMPOS = $d800
+.const LOGOMEM = $7000
 
 // Imports 
 //.var music = LoadSid("assets\static.sid")
@@ -43,17 +44,18 @@ start:
 	lda #>message
 	sta textpos+2
 	
+	jsr copylogotomemory
 	
 	// Setup IRQ
 // 	jsr music.init
 //     lda #music.startSong-1
 
- 	jsr emptyscreen	
+  	jsr emptyscreen	
 	
 musiclines:
 	jsr initirqs
 
-
+ 	jsr printlogo
 			
 mainloop:	jmp mainloop
 	
@@ -74,10 +76,15 @@ mainloop:	jmp mainloop
 // .fill music.size, music.getData(i)
 
 //********************************************************************************************
-// Logo1                                                                                                 
+// Logo1+2
 //********************************************************************************************
-logo1:
-.byte 20,20,20,20,20,20,20
+.pc = $3800 "Logofont"
+.import binary "assets\radio_paralax_logo.imap"
+
+.pc = $2300 "Logo Tilemap"
+.var logoscr = LoadBinary("assets\radio_paralax_logo.iscr")
+
+templogomap: .fill logoscr.getSize(), logoscr.get(i)
 
 .pc = $4000 "Data"
 framecounter:
@@ -111,7 +118,7 @@ rastercolours_musiclines:
 // logo swing                                                                                                 
 //********************************************************************************************
 
-swinglogo1offset: .byte $0
+swinglogo1offset: .byte $28
 swinglogo1index: .byte $00
 swinglogo1active: .byte $0
 

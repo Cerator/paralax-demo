@@ -30,10 +30,12 @@ startofscreen:
 	
 	dec framecounter
 	
- 	jsr swinglogo1
+	:SetLogoCharSet()
 	
- 	lda swinglogo1offset
- 	sta $d016
+//  	jsr swinglogo1
+// 	
+//  	lda swinglogo1offset
+// 		sta $d016
  	
 	ldy #STARTRASTERLINE
     sty $d012

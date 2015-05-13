@@ -3,39 +3,6 @@
 //********************************************************************************************
 	
 //********************************************************************************************
-// Screen                                                                                                 
-//********************************************************************************************
-
-emptyscreen:
-	lda #%00000000	// disable all sprites
-	sta $d015		// disable all sprites
-	:FillScreen(32)
-rts
-
-printmotif:
-	ldy #159
-	charloop:
-		lda (TEXTMEMLOW),y //(TEXTMEMLOW)
-		sta (MOTIFSCREENPOSLOW),y
-		dey
-		bne charloop
-
-rts
-
-setforegroundcolour:
-	ldx #$00
-colourscreen:	
-	sta COLOURRAMPOS,x
-	sta COLOURRAMPOS+$100,x
-	sta COLOURRAMPOS+$200,x
-	sta COLOURRAMPOS+$300,x
-	dex
-	bne colourscreen
-rts
-
-
-
-//********************************************************************************************
 // Rasterbars                                                                                                 
 //********************************************************************************************
 
@@ -77,6 +44,121 @@ rts
 
 
 //********************************************************************************************
+// Screen                                                                                                 
+//********************************************************************************************
+
+emptyscreen:
+	lda #%00000000	// disable all sprites
+	sta $d015		// disable all sprites
+	:FillScreen(32)
+rts
+
+printmotif:
+	ldy #159
+	charloop:
+		lda (TEXTMEMLOW),y //(TEXTMEMLOW)
+		sta (MOTIFSCREENPOSLOW),y
+		dey
+		bne charloop
+
+rts
+
+setforegroundcolour:
+	ldx #$00
+colourscreen:	
+	sta COLOURRAMPOS,x
+	sta COLOURRAMPOS+$100,x
+	sta COLOURRAMPOS+$200,x
+	sta COLOURRAMPOS+$300,x
+	dex
+	bne colourscreen
+rts
+
+
+
+//********************************************************************************************
+// Copy logo to memory
+//********************************************************************************************
+
+copylogotomemory:
+	ldx #$00
+	lda #$20
+emptylogoloop:
+	sta LOGOMEM,x
+	sta LOGOMEM+$100,x
+	sta LOGOMEM+$200,x
+	sta LOGOMEM+$300,x
+	sta LOGOMEM+$400,x
+	sta LOGOMEM+$500,x
+	sta LOGOMEM+$600,x
+	sta LOGOMEM+$700,x
+	sta LOGOMEM+$800,x
+	sta LOGOMEM+$900,x
+	dex
+	bne emptylogoloop
+	
+	ldx #0
+	ldy #40
+copyloop:
+	lda templogomap,x
+	sta LOGOMEM,y
+	lda templogomap+$28,x
+	sta LOGOMEM+$100,y
+	lda templogomap+$50,x
+	sta LOGOMEM+$200,y
+	lda templogomap+$78,x
+	sta LOGOMEM+$300,y
+	lda templogomap+$A0,x
+	sta LOGOMEM+$400,y
+	lda templogomap+$C8,x
+	sta LOGOMEM+$500,y
+	lda templogomap+$F0,x
+	sta LOGOMEM+$600,y
+	lda templogomap+$118,x
+	sta LOGOMEM+$700,y
+	lda templogomap+$140,x
+	sta LOGOMEM+$800,y
+	lda templogomap+$168,x
+	sta LOGOMEM+$900,y
+	iny
+	inx
+	cpx #40
+	bne copyloop
+
+rts
+
+printlogo:
+	lda swinglogo1offset
+	clc
+	adc	#39
+	tax 
+printlogoloop:
+	lda LOGOMEM,x
+	sta SCREENPOS,x
+	lda LOGOMEM+$100,x
+	sta SCREENPOS+$28,x
+	lda LOGOMEM+$200,x
+	sta SCREENPOS+$50,x
+	lda LOGOMEM+$300,x
+	sta SCREENPOS+$78,x
+	lda LOGOMEM+$400,x
+	sta SCREENPOS+$A0,x
+	lda LOGOMEM+$500,x
+	sta SCREENPOS+$C8,x
+	lda LOGOMEM+$600,x
+	sta SCREENPOS+$F0,x
+	lda LOGOMEM+$700,x
+	sta SCREENPOS+$118,x
+	lda LOGOMEM+$800,x
+	sta SCREENPOS+$140,x
+	lda LOGOMEM+$900,x
+	sta SCREENPOS+$168,x
+	dex
+	cpx swinglogo1offset
+	bpl printlogoloop
+rts
+
+//********************************************************************************************
 // Swing the lines
 //********************************************************************************************
 
@@ -108,25 +190,25 @@ rts
 // Draw the lines
 //********************************************************************************************
 
-drawlogo1:
-	ldy #$00
-looplogo1:
-	lda logo1,x
-	sta SCREENPOS,y
-	lda logo1+$40,x
-	sta SCREENPOS+$28,y
-	lda logo1+$80,x
-	sta SCREENPOS+$50,y
-	lda logo1+$C0,x
-	sta SCREENPOS+$78,y
-	lda logo1+$100,x
-	sta SCREENPOS+$A0,y
-	inx
-	iny
-	cpy #$28
-	bne looplogo1
-
-rts
+// drawlogo1:
+// 	ldy #$00
+// looplogo1:
+// 	lda logo1,x
+// 	sta SCREENPOS,y
+// 	lda logo1+$40,x
+// 	sta SCREENPOS+$28,y
+// 	lda logo1+$80,x
+// 	sta SCREENPOS+$50,y
+// 	lda logo1+$C0,x
+// 	sta SCREENPOS+$78,y
+// 	lda logo1+$100,x
+// 	sta SCREENPOS+$A0,y
+// 	inx
+// 	iny
+// 	cpy #$28
+// 	bne looplogo1
+// 
+// rts
 
 
 //********************************************************************************************
