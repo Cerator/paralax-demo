@@ -25,7 +25,7 @@ a1:	lda rastercolours_musiclines,x
 	ldx #$03 //7
 a2:	dex
 	bne a2
-	
+
 	nop
 	nop
 	ldx #BLACK

@@ -11,14 +11,15 @@
 
 .const STARTRASTERLINE = 50
 .const SCROLLLINERASTER = 146
-.const SWINGLOGORASTER = 200
+.const SWINGLOGORASTER = 194
 .const SCROLLLINEOFFSET = 11*40
 .const SCREENPOS = $0400		//!!!
 .const COLOURRAMPOS = $d800
 .const LOGOMEM = $7000
 
 // Imports 
-//.var music = LoadSid("assets\static.sid")
+.var music = LoadSid("assets\HUBBARDIZE_v2.sid")
+//.var music = LoadSid("assets\acid@night.sid")
 	
 .import source "macros.asm"
 .pc = $5000 "Subroutines"
@@ -47,17 +48,15 @@ start:
 	
 	jsr copylogotomemory
 	
-	// Setup IRQ
-// 	jsr music.init
-//     lda #music.startSong-1
 
   	jsr emptyscreen	
 	
 musiclines:
+	// Setup IRQ
+	jsr music.init
+    lda #music.startSong-1
 	jsr initirqs
 
-// 	jsr printlogo
-			
 mainloop:	jmp mainloop
 	
 
@@ -73,8 +72,8 @@ mainloop:	jmp mainloop
 //********************************************************************************************
 // Data                                                                                                 
 //********************************************************************************************
-// .pc=music.location "Music"
-// .fill music.size, music.getData(i)
+.pc=music.location "Music"
+.fill music.size, music.getData(i)
 
 //********************************************************************************************
 // Logo1+2
