@@ -11,6 +11,7 @@
 
 .const STARTRASTERLINE = 50
 .const SCROLLLINERASTER = 146
+.const SWINGLOGORASTER = 200
 .const SCROLLLINEOFFSET = 11*40
 .const SCREENPOS = $0400		//!!!
 .const COLOURRAMPOS = $d800
@@ -55,7 +56,7 @@ start:
 musiclines:
 	jsr initirqs
 
- 	jsr printlogo
+// 	jsr printlogo
 			
 mainloop:	jmp mainloop
 	
@@ -118,16 +119,19 @@ rastercolours_musiclines:
 // logo swing                                                                                                 
 //********************************************************************************************
 
-swinglogo1offset: .byte $28
-swinglogo1index: .byte $00
-swinglogo1active: .byte $0
+swinglogo1softscrolloffset: .byte $0
+swinglogo1hardscrolloffset: .byte $28
+swinglogo1index: .byte $90
+swinglogo1active: .byte $1
 
-swinglogo2offset: .byte $0
+swinglogo2softscrolloffset: .byte $0
+swinglogo2hardscrolloffset: .byte $0
 swinglogo2index: .byte $00
 swinglogo2active: .byte $0
 
+.pc = $4200 "Sine"
 swingsine: 
-	.fill 256, 105 + floor(70*sin(toRadians(i*360/256)))
+	.fill 256, 255-floor(255*abs(sin(toRadians(i*180/256))))
 	//.for(var i=0;i<150;i++) .print "sine at " + toIntString(i) + " is " + toIntString(logoswingsine.charAt(i))
 
 // scroll vars

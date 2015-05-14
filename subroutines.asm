@@ -26,7 +26,6 @@ a1:	lda rastercolours_musiclines,x
 a2:	dex
 	bne a2
 	
-
 	nop
 	nop
 	ldx #BLACK
@@ -127,35 +126,50 @@ copyloop:
 
 rts
 
-printlogo:
-	lda swinglogo1offset
+drawlogo1:
+	ldy #39
+	ldx swinglogo1hardscrolloffset
+	txa
 	clc
-	adc	#39
+	adc	#46 	//39
 	tax 
-printlogoloop:
+drawlogo1loop:
 	lda LOGOMEM,x
-	sta SCREENPOS,x
+	sta SCREENPOS,y
 	lda LOGOMEM+$100,x
-	sta SCREENPOS+$28,x
+	sta SCREENPOS+$28,y
 	lda LOGOMEM+$200,x
-	sta SCREENPOS+$50,x
+	sta SCREENPOS+$50,y
 	lda LOGOMEM+$300,x
-	sta SCREENPOS+$78,x
+	sta SCREENPOS+$78,y
 	lda LOGOMEM+$400,x
-	sta SCREENPOS+$A0,x
-	lda LOGOMEM+$500,x
-	sta SCREENPOS+$C8,x
-	lda LOGOMEM+$600,x
-	sta SCREENPOS+$F0,x
-	lda LOGOMEM+$700,x
-	sta SCREENPOS+$118,x
-	lda LOGOMEM+$800,x
-	sta SCREENPOS+$140,x
-	lda LOGOMEM+$900,x
-	sta SCREENPOS+$168,x
+	sta SCREENPOS+$A0,y
 	dex
-	cpx swinglogo1offset
-	bpl printlogoloop
+	dey
+	bpl drawlogo1loop
+rts
+
+drawlogo2:
+	ldy #39
+	ldx swinglogo1hardscrolloffset
+	txa
+	clc
+	adc	#46 	//39
+	tax 
+drawlogo2loop:
+	lda LOGOMEM+$500,x
+	sta SCREENPOS+$C8,y
+	lda LOGOMEM+$600,x
+	sta SCREENPOS+$F0,y
+	lda LOGOMEM+$700,x
+	sta SCREENPOS+$118,y
+	lda LOGOMEM+$800,x
+	sta SCREENPOS+$140,y
+	lda LOGOMEM+$900,x
+	sta SCREENPOS+$168,y
+	dex
+	dey
+	bpl drawlogo2loop
 rts
 
 //********************************************************************************************
@@ -171,15 +185,15 @@ swinglogo1:
 	and #$07
 	eor #$07
 	ora #$10
-	sta swinglogo1offset
+	sta swinglogo1softscrolloffset
 
 	pla
 	lsr
 	lsr
 	lsr
 	tax	
-	// now the sine char offset is in x and we can draw the line
-	//jsr drawlogo1
+	// now the sine char offset is in x and we can draw the logo
+	stx swinglogo1hardscrolloffset
 
 	inc swinglogo1index
 

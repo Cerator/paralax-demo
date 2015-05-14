@@ -32,10 +32,8 @@ startofscreen:
 	
 	:SetLogoCharSet()
 	
-//  	jsr swinglogo1
-// 	
-//  	lda swinglogo1offset
-// 		sta $d016
+   	lda swinglogo1softscrolloffset
+ 	sta $d016
  	
 	ldy #STARTRASTERLINE
     sty $d012
@@ -69,16 +67,16 @@ musiclineraster:
 	jmp $ea81
 
 scrolllineraster:
-//	:SetScrollCharset()
+	:SetScrollCharset()
 	lda #$ff
 	sta $d019
   	 	
 	lda scrolllineactive
 	bne scroll
-    ldy #0
+    ldy #SWINGLOGORASTER
     sty $d012
-    lda #<startofscreen
-    ldx #>startofscreen
+    lda #<swinglogoraster
+    ldx #>swinglogoraster
     jmp scrollend
 
 scroll:	
@@ -88,10 +86,10 @@ scroll:
 	sta $d016
 
 	// prepare raster interrupt to be overwritten when the row has to be shifted
-    ldy #0
+    ldy #SWINGLOGORASTER
     sty $d012
-    lda #<startofscreen
-    ldx #>startofscreen
+    lda #<swinglogoraster
+    ldx #>swinglogoraster
 
 	dec smooth			// smooth scroll
 	bne scrollend
@@ -128,6 +126,27 @@ rowshiftraster:
 
 	jsr shiftrow
 
+    ldy #SWINGLOGORASTER
+    sty $d012
+    lda #<swinglogoraster
+    ldx #>swinglogoraster
+
+    sta $0314
+    stx $0315
+	ldx #$00
+	ldy #$7f
+	inc $d019			// acknowledge interrupt
+	jmp $ea81
+	
+swinglogoraster:
+	lda #$ff
+	sta $d019
+
+	jsr swinglogo1
+	
+	jsr drawlogo1
+	jsr drawlogo2
+
     ldy #0
     sty $d012
     lda #<startofscreen
@@ -138,6 +157,6 @@ rowshiftraster:
 	ldx #$00
 	ldy #$7f
 	inc $d019			// acknowledge interrupt
-	jmp $ea81
+	jmp $ea31
 	
 		
