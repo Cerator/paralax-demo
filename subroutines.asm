@@ -73,7 +73,47 @@ colourscreen:
 	bne colourscreen
 rts
 
-
+initlogoforegroundcolourgradient:
+	ldx #$27
+colourlogoline1:	
+	lda #WHITE+%1000
+	sta COLOURRAMPOS,x
+	sta COLOURRAMPOS+$c8,x
+	dex
+	bne colourlogoline1
+	
+	ldx #$27
+colourlogoline2:	
+	lda #CYAN+%1000
+	sta COLOURRAMPOS+$28,x
+	sta COLOURRAMPOS+$28+$c8,x
+	dex
+	bne colourlogoline2
+	
+	ldx #$27
+colourlogoline3:	
+	lda #CYAN+%1000
+	sta COLOURRAMPOS+$50,x
+	sta COLOURRAMPOS+$50+$c8,x
+	dex
+	bne colourlogoline3
+	
+	ldx #$27
+colourlogoline4:	
+	lda #PURPLE+%1000
+	sta COLOURRAMPOS+$78,x
+	sta COLOURRAMPOS+$78+$c8,x
+	dex
+	bne colourlogoline4
+	
+	ldx #$27
+colourlogoline5:	
+	lda #PURPLE+%1000
+	sta COLOURRAMPOS+$a0,x
+	sta COLOURRAMPOS+$a0+$c8,x
+	dex
+	bne colourlogoline5
+rts
 
 //********************************************************************************************
 // Copy logo to memory

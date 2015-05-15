@@ -20,6 +20,30 @@ writescreen:
 	sta $d016
 }
 
+.macro MultiColourTextMode() {
+	// multicolour on
+	// $d011=$1b, $d016=$18
+	lda #$1b
+	sta $d011
+	lda #$18
+	sta $d016
+}
+
+.macro SetMultiColours(col1, col2) {
+	:SetMultiColour1(col1)
+	:SetMultiColour2(col2)
+}
+
+.macro SetMultiColour1(col){
+	lda #col
+	sta $d022
+}
+
+.macro SetMultiColour2(col){
+	lda #col
+	sta $d023
+}
+
 .macro IncTextPos() {
 	inc textpos+1
 	bne incend
@@ -52,6 +76,10 @@ incend:
 }
 
 .macro SetLogoCharSet() {
+	lda #$1b
+	sta $d011
+	lda #$18
+	sta $d016
     lda $d018
     and #%11110001
     ora #%00001110        // set chars location to $3800 for displaying the custom font

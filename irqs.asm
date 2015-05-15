@@ -33,7 +33,7 @@ startofscreen:
 	:SetLogoCharSet()
 	
    	lda swinglogo1softscrolloffset
- 	sta $d016
+  	sta $d016
  	
 	ldy #STARTRASTERLINE
     sty $d012
@@ -67,10 +67,10 @@ musiclineraster:
 	jmp $ea81
 
 scrolllineraster:
-	:SetScrollCharset()
 	lda #$ff
 	sta $d019
-  	 	
+
+	:SetScrollCharset()
 	lda scrolllineactive
 	bne scroll
     ldy #SWINGLOGORASTER
@@ -80,10 +80,10 @@ scrolllineraster:
     jmp scrollend
 
 scroll:	
-	lda $d016			// grab scroll register
-	and #224			// mask lower 3 bits 248
-	ora offset			// apply scroll
-	sta $d016
+// 	lda $d016			// grab scroll register
+// 	and #224			// mask lower 3 bits 248
+// 	ora offset			// apply scroll
+// 	sta $d016
 
 	// prepare raster interrupt to be overwritten when the row has to be shifted
     ldy #SWINGLOGORASTER

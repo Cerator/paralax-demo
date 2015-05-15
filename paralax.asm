@@ -35,10 +35,14 @@
 	.pc = $810 "Main Program"
 
 start:
+	:MultiColourTextMode()
 	:SetBorderColour(BLACK)
 	:SetBackgroundColour(BLACK)
+	:SetMultiColours(BLUE,LIGHT_BLUE)
 	lda #GREEN
 	jsr setforegroundcolour
+	
+	jsr initlogoforegroundcolourgradient
 
 	// init scrolltext	
 	lda #<message	// reset textpos
@@ -56,6 +60,7 @@ musiclines:
 	jsr music.init
     lda #music.startSong-1
 	jsr initirqs
+//	:MultiColourTextMode()
 
 mainloop:	jmp mainloop
 	
