@@ -163,6 +163,6 @@ swinglogoraster:
 	ldx #$00
 	ldy #$7f
 	inc $d019			// acknowledge interrupt
-	jmp $ea31
+	jmp $ea81
 	
 		
