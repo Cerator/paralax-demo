@@ -76,7 +76,7 @@ rts
 initlogoforegroundcolourgradient:
 	ldx #$27
 colourlogoline1:	
-	lda #WHITE+%1000
+	lda #CYAN+%1000
 	sta COLOURRAMPOS,x
 	sta COLOURRAMPOS+$c8,x
 	dex
@@ -84,7 +84,7 @@ colourlogoline1:
 	
 	ldx #$27
 colourlogoline2:	
-	lda #CYAN+%1000
+	lda #PURPLE+%1000
 	sta COLOURRAMPOS+$28,x
 	sta COLOURRAMPOS+$28+$c8,x
 	dex
@@ -108,7 +108,7 @@ colourlogoline4:
 	
 	ldx #$27
 colourlogoline5:	
-	lda #PURPLE+%1000
+	lda #BLUE+%1000
 	sta COLOURRAMPOS+$a0,x
 	sta COLOURRAMPOS+$a0+$c8,x
 	dex

@@ -147,11 +147,7 @@ swinglogoraster:
 	jsr drawlogo1
 	jsr drawlogo2
 	
-	lda #WHITE
-	sta $d020
 	jsr music.play		// more time at the bottom of the screen!
-	lda #BLACK
-	sta $d020
 
     ldy #0
     sty $d012

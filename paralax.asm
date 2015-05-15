@@ -38,7 +38,7 @@ start:
 	:MultiColourTextMode()
 	:SetBorderColour(BLACK)
 	:SetBackgroundColour(BLACK)
-	:SetMultiColours(BLUE,LIGHT_BLUE)
+	:SetMultiColours(LIGHT_BLUE,DARK_GRAY)
 	lda #GREEN
 	jsr setforegroundcolour
 	
