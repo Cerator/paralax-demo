@@ -29,6 +29,8 @@ startofscreen:
 //	:ScrollingOff()
 	
 	dec framecounter
+
+	jsr music.play		// more time at the bottom of the screen!
 	
 	:SetLogoCharSet()
 	
@@ -144,11 +146,9 @@ swinglogoraster:
 
 	jsr swinglogo1
 	
-	jsr drawlogo1
-	jsr drawlogo2
+ 	jsr drawlogo1
+ 	jsr drawlogo2
 	
-	jsr music.play		// more time at the bottom of the screen!
-
     ldy #0
     sty $d012
     lda #<startofscreen

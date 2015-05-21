@@ -9,9 +9,11 @@
 .const MOTIFSCREENPOSLOW = $FD
 .const MOTIFSCREENPOSHIGH = $FE
 
+.const LOGOYOFFSET = 3*40
+
 .const STARTRASTERLINE = 50
-.const SCROLLLINERASTER = 146
-.const SWINGLOGORASTER = 194
+.const SCROLLLINERASTER = 170
+.const SWINGLOGORASTER = 216
 .const SCROLLLINEOFFSET = 11*40
 .const SCREENPOS = $0400		//!!!
 .const COLOURRAMPOS = $d800
@@ -92,31 +94,75 @@ mainloop:	jmp mainloop
 templogomap: .fill logoscr.getSize(), logoscr.get(i)
 
 .pc = $4000 "Data"
+rastercolours_musiclines:
+	//.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, BLACK, BLACK, BLACK 					//4
+	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, BLACK, BLACK, BLACK 					//4
+	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, BLACK, BLACK, BLACK 					//4
+	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
+	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
+	.byte BLACK, BLACK, BLACK, BLACK 					//4
+	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
+	.byte BLACK, BLACK, BLACK, BLACK 					//4
+	//.byte YELLOW, YELLOW			//2
+
+//********************************************************************************************
+// Rasterbars                                                                                                 
+//********************************************************************************************
+
+.align $100
+rastermusiclines:
+	ldx #$05
+d1:	dex
+	bne d1
+
+	ldx #$00
+c1:	ldy #$08
+a1:	lda rastercolours_musiclines,x
+	sta $d020
+	sta $d021
+	inx
+	dey
+	beq c1
+	
+	txa
+	ldx #$03 //7
+a2:	dex
+	bne a2
+
+	nop
+	nop
+	ldx #BLACK
+	stx $d020
+	stx $d021
+	
+	ldx #$01 //7
+b1:	dex
+	bne b1
+	
+	tax
+	cpx #96 //End of rasterbars? 82/80
+	bcc a1
+rts
+
+	
+		
 framecounter:
 	.byte $00
 
 textlines:
 	.byte $00
 
-.align $100		
-rastercolours_musiclines:
-	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
-	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
-	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
-	.byte BLACK, BLACK, BLACK, BLACK 					//4
-	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
-	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
-	.byte BLACK, BLACK, BLACK, BLACK 					//4
-	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
-	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
-	.byte BLACK, BLACK, BLACK, BLACK 					//4
-	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
-	.byte BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK, BLACK 			//8
-	.byte BLACK, BLACK, BLACK, BLACK 					//4
-	.byte BLACK, LIGHT_GRAY, GRAY, DARK_GRAY			//4 <-
-	.byte BLACK, BLACK, BLACK, BLACK 					//4
-	.byte BLACK, BLACK			//2
-	
 
 	
 //********************************************************************************************
@@ -129,8 +175,8 @@ swinglogo1index: .byte $90
 swinglogo1active: .byte $1
 
 swinglogo2softscrolloffset: .byte $0
-swinglogo2hardscrolloffset: .byte $0
-swinglogo2index: .byte $00
+swinglogo2hardscrolloffset: .byte $28
+swinglogo2index: .byte $90
 swinglogo2active: .byte $0
 
 .pc = $4200 "Sine"

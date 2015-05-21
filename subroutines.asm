@@ -2,45 +2,6 @@
 // Subroutines                                                                                                 
 //********************************************************************************************
 	
-//********************************************************************************************
-// Rasterbars                                                                                                 
-//********************************************************************************************
-
-.align $100
-rastermusiclines:
-	ldx #$05
-d1:	dex
-	bne d1
-
-	ldx #$00
-c1:	ldy #$08
-a1:	lda rastercolours_musiclines,x
-	sta $d020
-	sta $d021
-	inx
-	dey
-	beq c1
-	
-	txa
-	ldx #$03 //7
-a2:	dex
-	bne a2
-
-	nop
-	nop
-	ldx #BLACK
-	stx $d020
-	stx $d021
-	
-	ldx #$01 //7
-b1:	dex
-	bne b1
-	
-	tax
-	cpx #82 //End of rasterbars?
-	bcc a1
-rts
-
 
 //********************************************************************************************
 // Screen                                                                                                 
@@ -77,40 +38,40 @@ initlogoforegroundcolourgradient:
 	ldx #$27
 colourlogoline1:	
 	lda #CYAN+%1000
-	sta COLOURRAMPOS,x
-	sta COLOURRAMPOS+$c8,x
+	sta COLOURRAMPOS+LOGOYOFFSET,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$c8,x
 	dex
 	bne colourlogoline1
 	
 	ldx #$27
 colourlogoline2:	
 	lda #PURPLE+%1000
-	sta COLOURRAMPOS+$28,x
-	sta COLOURRAMPOS+$28+$c8,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$28,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$28+$c8,x
 	dex
 	bne colourlogoline2
 	
 	ldx #$27
 colourlogoline3:	
 	lda #CYAN+%1000
-	sta COLOURRAMPOS+$50,x
-	sta COLOURRAMPOS+$50+$c8,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$50,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$50+$c8,x
 	dex
 	bne colourlogoline3
 	
 	ldx #$27
 colourlogoline4:	
 	lda #PURPLE+%1000
-	sta COLOURRAMPOS+$78,x
-	sta COLOURRAMPOS+$78+$c8,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$78,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$78+$c8,x
 	dex
 	bne colourlogoline4
 	
 	ldx #$27
 colourlogoline5:	
 	lda #BLUE+%1000
-	sta COLOURRAMPOS+$a0,x
-	sta COLOURRAMPOS+$a0+$c8,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$a0,x
+	sta COLOURRAMPOS+LOGOYOFFSET+$a0+$c8,x
 	dex
 	bne colourlogoline5
 rts
@@ -175,15 +136,15 @@ drawlogo1:
 	tax 
 drawlogo1loop:
 	lda LOGOMEM,x
-	sta SCREENPOS,y
+	sta SCREENPOS+LOGOYOFFSET,y
 	lda LOGOMEM+$100,x
-	sta SCREENPOS+$28,y
+	sta SCREENPOS+LOGOYOFFSET+$28,y
 	lda LOGOMEM+$200,x
-	sta SCREENPOS+$50,y
+	sta SCREENPOS+LOGOYOFFSET+$50,y
 	lda LOGOMEM+$300,x
-	sta SCREENPOS+$78,y
+	sta SCREENPOS+LOGOYOFFSET+$78,y
 	lda LOGOMEM+$400,x
-	sta SCREENPOS+$A0,y
+	sta SCREENPOS+LOGOYOFFSET+$A0,y
 	dex
 	dey
 	bpl drawlogo1loop
@@ -198,15 +159,15 @@ drawlogo2:
 	tax 
 drawlogo2loop:
 	lda LOGOMEM+$500,x
-	sta SCREENPOS+$C8,y
+	sta SCREENPOS+LOGOYOFFSET+$C8,y
 	lda LOGOMEM+$600,x
-	sta SCREENPOS+$F0,y
+	sta SCREENPOS+LOGOYOFFSET+$F0,y
 	lda LOGOMEM+$700,x
-	sta SCREENPOS+$118,y
+	sta SCREENPOS+LOGOYOFFSET+$118,y
 	lda LOGOMEM+$800,x
-	sta SCREENPOS+$140,y
+	sta SCREENPOS+LOGOYOFFSET+$140,y
 	lda LOGOMEM+$900,x
-	sta SCREENPOS+$168,y
+	sta SCREENPOS+LOGOYOFFSET+$168,y
 	dex
 	dey
 	bpl drawlogo2loop
@@ -238,6 +199,30 @@ swinglogo1:
 	inc swinglogo1index
 
 continueafterlogo1:		
+rts
+
+swinglogo2:	
+	lda swinglogo1active
+	beq continueafterlogo2
+	ldx swinglogo1index
+	lda swingsine,x
+	pha
+	and #$07
+	eor #$07
+	ora #$10
+	sta swinglogo2softscrolloffset
+
+	pla
+	lsr
+	lsr
+	lsr
+	tax	
+	// now the sine char offset is in x and we can draw the logo
+	stx swinglogo2hardscrolloffset
+
+	inc swinglogo2index
+
+continueafterlogo2:		
 rts
 
 //********************************************************************************************
